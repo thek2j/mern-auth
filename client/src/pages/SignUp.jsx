@@ -1,10 +1,11 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 
 export default function SignUp() {
   const [formData, setFormData] = useState({});
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   function handleChange(e) {
     setFormData({ ...formData, [e.target.id]: e.target.value });
@@ -24,9 +25,11 @@ export default function SignUp() {
     const data = await res.json();
     if (data.success === false) {
       setError(true);
+      setLoading(false);
+      return;
     }
     setLoading(false);
-    console.log(data);
+    navigate("/sign-in");
   };
 
   return (
@@ -59,7 +62,7 @@ export default function SignUp() {
           disabled={loading}
           className="bg-slate-600 uppercase p-3 rounded-lg text-white hover:opacity-95 disabled:opacity-80"
         >
-          {loading ? "Loading" : "SignUp"}
+          {loading ? "Loading" : "Sign Up"}
         </button>
       </form>
       <div className="flex gap-2 mt-5">
